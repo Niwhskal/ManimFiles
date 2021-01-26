@@ -58,62 +58,50 @@ class PythagoreanProof(Scene):
         
         self.add(square) 
         self.add(main)
-        state2 = TextMobject("no dates)= ").next_to(main, RIGHT) 
-        self.play(ShowCreation(state2))
-        text2.next_to(state2, RIGHT)
-        self.play(ShowCreation(text2))
-        
-        self.play(ShowCreation(all_rectangles[1])) 
-        text2.generate_target()
-        text2.target.move_to(all_rectangles[1].get_center())
-        self.play(MoveToTarget(text2))    
-        self.remove(state2)
 
+        ma = {2: "no dates)= ", 3: "1 date)= ", 1: "2 dates)= ", 4: "3 dates)= "}
+        text_order = {2: "text2", 3:"text3", 1: "text1", 4: "text4"} 
+        rect_order = {0:1, 1:2, 2:0, 3:3}
+        for i, val in enumerate([2,3,1,4]): 
 
-#-----
-        state3 = TextMobject("1 date)=").next_to(main, RIGHT)
-        self.play(ShowCreation(state3)) 
-        text3.next_to(state3, RIGHT)
-        self.play(ShowCreation(text3))
-        self.play(ShowCreation(all_rectangles[2]))
-        text3.generate_target()
-        text3.target.move_to(all_rectangles[2].get_center())
-        self.play(MoveToTarget(text3))
-        self.remove(state3)        
-#-----
-
-        state1 = TextMobject("2 dates)=").next_to(main, RIGHT)
-        self.play(ShowCreation(state1))
-        text1.next_to(state1, RIGHT)
-        self.play(ShowCreation(text1))
-        self.play(ShowCreation(all_rectangles[0]))
-        text1.generate_target()
-
-        text1.target.move_to(all_rectangles[0].get_center())
-        self.play(MoveToTarget(text1))
-        self.remove(state1)
-#-----
- 
-        state4 = TextMobject("3 dates)=").next_to(main, RIGHT)
-        self.play(ShowCreation(state4))
-        text4.next_to(state4, RIGHT)
-        self.play(ShowCreation(text4))
-        self.play(ShowCreation(all_rectangles[3]))
-        text4.generate_target()
-
-        text4.target.move_to(all_rectangles[3].get_center())
-        self.play(MoveToTarget(text4))
-
-
+            state2 = TextMobject(ma[val]).next_to(main, RIGHT)
+            self.play(ShowCreation(state2))
+            eval(text_order[val]).next_to(state2, RIGHT)
+            self.play(ShowCreation(eval(text_order[val])))        
+            self.play(ShowCreation(all_rectangles[rect_order[i]])) 
+            eval(text_order[val]).generate_target()
+            eval(text_order[val]).target.move_to(all_rectangles[rect_order[i]].get_center())
+            self.play(MoveToTarget(eval(text_order[val])))    
+            self.remove(state2)
 # Remove main
-        self.remove(state4)
+        self.remove(state2)
         self.remove(main)
         
-        iftext1 = TextMobject("If, out of three, one cancels, then: P(x=3) = 0").to_edge(UP)
-        self.play(ShowCreation(iftext1)) 
+        iftext1 = TextMobject("suppose one cancels, then: P(x=3) = 0").to_edge(UP)
 
+        iftext2 = TextMobject("then another cancels: P(X=2) =0").to_edge(UP)
 
+        iftext3 = TextMobject("finally the last one cancels: P(X=1) = 0").to_edge(UP)
 
+        ifdict = {0: "iftext1", 1: "iftext2", 2: "iftext3"}
 
-
-        self.wait(10)
+        trndict = {3: 2, 0:1, 2: 1}
+        rm_text = {3: "text4", 0: "text1", 2: "text3"}
+        sumdict = {3: "0.25", 0: "0.75", 2: "1.0"}
+        replacedict = {3: "text3", 0: "text2", 2: "text2"}
+        for m, num in enumerate([3,0,2]):
+            self.play(ShowCreation(eval(ifdict[m]))) 
+            if num ==2:
+                all_rectangles[3].set_color(d[trndict[num]])
+            self.play(FadeToColor(all_rectangles[num], d[trndict[num]]))
+            self.remove(eval(rm_text[num]))
+        
+            temp_1 = TextMobject(sumdict[num])
+            temp_1.move_to(all_rectangles[trndict[num]].get_center())
+            self.play(Transform(eval(replacedict[num]), temp_1))
+                
+            self.remove(eval(ifdict[m]))
+        
+        textfin = TextMobject(r"The only state left is 'no date' \\ and it will certainly happen.").shift(3*UP)
+        self.add(textfin)
+        self.wait(5)
