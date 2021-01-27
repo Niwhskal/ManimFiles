@@ -79,9 +79,9 @@ class PythagoreanProof(Scene):
         
         iftext1 = TextMobject("suppose one cancels, then: P(x=3) = 0").to_edge(UP)
 
-        iftext2 = TextMobject("then another cancels: P(X=2) =0").to_edge(UP)
+        iftext2 = TextMobject("and another cancels: P(X=2) =0").to_edge(UP)
 
-        iftext3 = TextMobject("finally the last one cancels: P(X=1) = 0").to_edge(UP)
+        iftext3 = TextMobject("and the last one cancels as well: P(X=1) = 0").to_edge(UP)
 
         ifdict = {0: "iftext1", 1: "iftext2", 2: "iftext3"}
 
@@ -91,9 +91,20 @@ class PythagoreanProof(Scene):
         replacedict = {3: "text3", 0: "text2", 2: "text2"}
         for m, num in enumerate([3,0,2]):
             self.play(ShowCreation(eval(ifdict[m]))) 
+            self.wait(2)
+            self.remove(all_rectangles[num])
+           
+            if num ==3:
+                new_rect = Polygon(all_rectangles[trndict[num]].get_corner(DOWN+RIGHT), all_rectangles[num].get_corner(LEFT+DOWN), all_rectangles[num].get_corner(LEFT + UP),all_rectangles[trndict[num]].get_corner(RIGHT+UP), fill_opacity = 0.5, color = d[trndict[num]])
+
+            elif num ==0:
+                new_rect = Polygon(square.get_corner(TOP+RIGHT), all_rectangles[1].get_corner(DOWN+RIGHT), all_rectangles[0].get_corner(DOWN+LEFT), all_rectangles[0].get_corner(UP+LEFT), fill_opacity =0.5, color = d[trndict[num]])
+
             if num ==2:
-                all_rectangles[3].set_color(d[trndict[num]])
-            self.play(FadeToColor(all_rectangles[num], d[trndict[num]]))
+                new_rect =Polygon(new_rect.get_corner(TOP+RIGHT), all_rectangles[2].get_corner(DOWN+RIGHT), all_rectangles[3].get_corner(DOWN+LEFT), new_rect.get_corner(TOP + LEFT), fill_opacity = 0.5, color = d[trndict[num]])
+
+            self.play(Transform(all_rectangles[trndict[num]], new_rect )) 
+
             self.remove(eval(rm_text[num]))
         
             temp_1 = TextMobject(sumdict[num])
@@ -102,6 +113,6 @@ class PythagoreanProof(Scene):
                 
             self.remove(eval(ifdict[m]))
         
-        textfin = TextMobject(r"The only state left is 'no date' \\ and it will certainly happen.").shift(3*UP)
+        textfin = TextMobject(r"The only state left is `no date' \\ and it will certainly happen.").shift(3*UP)
         self.add(textfin)
         self.wait(5)
