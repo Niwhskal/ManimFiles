@@ -25,13 +25,15 @@ class exp(GraphScene):
         self.add(self.pdist)
         self.play(Write(dtext))    
 
-        eqn = TexMobject("f(X) = X^2", color = GOLD).next_to(graph_group, 6*RIGHT)
+        eqn = TexMobject("ML \\ model", color = BLUE).next_to(graph_group, 6*RIGHT)
+        rect = SurroundingRectangle(eqn, color = GOLD)
+        self.play(Write(eqn))
+        self.add(rect)
         etext = TextMobject(r"...and feed it to:").next_to(eqn, TOP).scale(0.6)
 
         self.play(Write(etext))
-        self.play(Write(eqn))
 
-        x_vals = np.random.normal(0.0, 1.0, 50)
+        x_vals = np.random.normal(0.0, 1.0, 5)
         dot ={}
         for n, val in enumerate(x_vals):
            dot[n] = SmallDot().move_to(self.coords_to_point(val,0)) 
@@ -66,22 +68,19 @@ class exp(GraphScene):
             
             self.add(dottext)
             self.add(dotx)
-            if k ==0:
-                prev_eqn= eqn
-        
+            
             rn_rate = np.log(2+np.exp(-k))
-            new_eqn = TexMobject("f("+str(round(v,2))+") = "+str(round((v*v),2))).next_to(graph_group, 4*RIGHT)
-            if k <2:
-                self.wait(0.5)
-        
-            self.play(ReplacementTransform(prev_eqn, new_eqn), run_time =rn_rate)
-            if k <2:
-                self.wait(0.5)
+            inp_text = TexMobject(str(round(v,2))).next_to(eqn, LEFT).scale(0.5)
+            self.play(ShowCreation(inp_text, run_time = rn_rate))
+            self.wait(0.5)
+            otext = TexMobject(str(round(v*v,2))).next_to(eqn, RIGHT).scale(0.5)
+            self.play(ShowCreation(otext), run_time =rn_rate)
             ndot = dot[k].move_to(self.coords_to_point(v, v*v)) 
             freq_group.add(ndot)
-            prev_eqn = new_eqn
             self.remove(dottext) 
             self.remove(dotx)
+            self.remove(inp_text)
+            self.remove(otext)
 
         
         final_text = TexMobject("Most of values are clustered near 0,\\ therefore the expected value of f(x) is 0").move_to(2*DOWN)
