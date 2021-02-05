@@ -30,6 +30,8 @@ class squares(GraphScene):
         data = [0.6, 0.2, 0.1, 0.05, 0.03, 0.02]
         x = [1, 2, 3, 4, 5, 6, 7]
         self.setup_axes(animate=True)
+        img = ImageMobject('/home/niwhskal/Downloads/Untitled45.png').scale(0.2).to_corner(DR)
+        self.add(img)
         heading = TextMobject(r"PMF", color = GOLD).to_edge(TOP)
         for state, p in enumerate(data):
                 line = Line(self.coords_to_point(x[state], 0), self.coords_to_point(x[state],p), color =RED)
