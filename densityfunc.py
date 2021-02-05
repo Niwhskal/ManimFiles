@@ -10,7 +10,6 @@ class Thumbnail(GraphScene):
         "y_axis_label": "", 
         "x_min" : 0,
         "x_max" : 10,
-        "x_labeled_nums": [0,10], 
         "axis_color": BLUE
     } 
 
@@ -18,14 +17,15 @@ class Thumbnail(GraphScene):
     def construct(self):
         self.show_function_graph()
 
+
     def show_function_graph(self):
         self.setup_axes(animate=True)
-        title = TextMobject("Pdf").move_to(3*UP)
-        self.add(title)
-        y_axis = TextMobject(r"probability\\density").move_to(UP+5.4*LEFT)
-        x_axis = TextMobject(r"money made $(10^{3})\rightarrow$").move_to(3*DOWN)
-        self.add(y_axis)
-        self.add(x_axis)
+        img = ImageMobject('/home/niwhskal/Downloads/Untitled45.png').scale(0.2).to_corner(DR)
+        self.add(img)
+        y_axis = TexMobject(r"probability\\density").move_to(UP+5.4*LEFT)
+        x_axis = TextMobject("$\\$ \\hspace{0.1cm} made \\rightarrow$").move_to(3*DOWN)
+        self.play(Write(x_axis))
+        self.play(Write(y_axis))
         def func(x):
             return 0.1 * (x + 3-4) * (x - 3-6) * (x-4) + 5
 
@@ -127,7 +127,7 @@ class Thumbnail(GraphScene):
         self.transform_between_riemann_rects(
             flat_rects, rects, 
             replace_mobject_with_target_in_scene = True,
-            run_time=0.9
+            run_time=1
         )
 
         for j in range(4,6):
@@ -140,4 +140,8 @@ class Thumbnail(GraphScene):
             replace_mobject_with_target_in_scene = True,
             run_time=1
             )
-        self.wait(5)
+        head = Text("PDF", color = GOLD).to_edge(TOP)
+        self.play(Write(head))
+
+
+        self.wait(10)
