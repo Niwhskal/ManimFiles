@@ -1,21 +1,92 @@
 from manim import *
 import numpy as np
+import math
 
 NEW_BLUE = "#68a8e1"
 
+class PlotGraph(GraphScene):
+
+    def __init__(self, func, color=BLUE_D, **kwargs):
+        GraphScene.__init__(self, **kwargs)
+        self.func = func
+        self.color = color
+        self.title = None
+        self.setup()
+
+    def setup(self):
+        #graph = create_plot(GraphScene)
+        self.setup_axes(animate=False)
+        self.graph = self.get_graph(self.func, color=self.color)
+
+    def set_title(self, title, color=DARK_GREY, scale=0.75):
+        title = Tex(title, color=color)
+        title.next_to(self.axes, UP)
+        title.scale(scale)
+        return title
+
+    def get_figure(self):
+        return VGroup(self.axes, self.graph)
+
+    def align_y_axis_to_left(self):
+        self.axes[1].align_to(self.axes[0], LEFT).shift(LEFT * 0.12)
+
+class ActivationFunc(GraphScene):
+
+    def __init__(self, **kwargs):
+        GraphScene.__init__(self)
+
+    def construct(self):
+        sigmoid_settings = {
+            "y_max":1,
+            "y_min":0,
+            "x_max":10,
+            "x_min":0,
+            "y_tick_frequency":1,
+            "x_tick_frequency":1,
+            "x_axis_width":5,
+            "y_axis_height":3,
+            "axes_color":GREY,
+            "graph_origin": ORIGIN + DOWN,
+#            "x_labeled_nums": list(range(0, 10)),
+#            "y_labeled_nums": list(range(0, 2))
+        }
+
+        def sigmoid(x):
+            return (1/np.sqrt(2*np.pi*1))*(np.exp(-((x-5)**2)/(2*1)))
+
+
+        def plot_figure(title, function, color, settings):
+            graph = PlotGraph(function, color, **settings)
+            #graph.align_y_axis_to_left()
+            fig = graph.get_figure()
+            fig.scale(2)
+            fig.move_to(ORIGIN)
+            title = graph.set_title(title)
+            fig = VGroup(*fig, title)
+            return fig, graph
+
+        sig_fig, sig_graph = plot_figure("Sigmoid", sigmoid, BLUE_D, sigmoid_settings)
+        self.play(ShowCreation(sig_fig[0]))
+        self.play(ShowCreation(sig_fig[1]))
+        self.play(FadeIn(sig_fig[2]))
+
+
+
+
 class Thumbnail(GraphScene):
-    CONFIG = { 
-        "x_min" : 0,
-        "x_max" : 1,
-        "x_axis_label": "",
-        "y_min": 0,
-#        "y_max": 1,
-        "y_axis_height": 1,
-        "y_axis_label": "", 
-        "axis_color": BLUE
-    } 
+    CONFIG = {
+            "x_min":0,
+            "y_tick_frequency":1,
+            "x_tick_frequency":1,
+            "x_axis_width":5,
+            "y_axis_height":3,
+            "axes_color":GREY,
+            "graph_origin": ORIGIN + DOWN,
+            "x_labeled_nums": list(range(0, 10)),
+            "y_labeled_nums": list(range(0, 2))
+        }
 
-
+    
     def construct(self):
         self.show_function_graph()
 
@@ -24,10 +95,10 @@ class Thumbnail(GraphScene):
         self.setup_axes(animate=True)
         img = ImageMobject('/home/niwhskal/Downloads/Untitled45.png').scale(0.2).to_corner(DR)
         self.add(img)
-        y_axis = Tex(r"probability\\density").move_to(UP+5.4*LEFT)
-        #x_axis = Text("$\\$ \\hspace{0.1cm} made \\rightarrow$").move_to(3*DOWN)
-        #self.play(Write(x_axis))
-        self.play(Write(y_axis))
+        y_ax = Tex(r"probability\\density").move_to(UP+5.4*LEFT)
+        x_ax = Tex(r"GPA $\rightarrow$").move_to(3*DOWN)
+        self.add(y_ax)
+        self.add(x_ax)
         def func(x):
             return 15*(1/np.sqrt(2*np.pi*1))*(np.exp(-((x-5)**2)/(2*1)))
 
