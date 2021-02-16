@@ -103,7 +103,7 @@ class Thumbnail(GraphScene):
             self.transform_between_riemann_rects(
             self.rect_list[j-1], self.rect_list[j], dx=1,
             replace_mobject_with_target_in_scene = True,
-            run_time=2
+            run_time=1
             )
             equalto = eq
         

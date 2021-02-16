@@ -29,6 +29,9 @@ class laplace(GraphScene):
         
         img = ImageMobject('/home/niwhskal/Downloads/Untitled45.png').scale(0.2).to_corner(DR)
         self.add(img)
+        
+        title1 = Tex("Laplace Distribution").scale(0.7).to_edge(UP).shift(LEFT*3)
+        self.add(title1)
        
 
         def func(x):

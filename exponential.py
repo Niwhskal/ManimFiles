@@ -8,7 +8,7 @@ class exponen(GraphScene):
         "x_min" :0,
         "x_max": 10,
         "y_min" :0,
-        "y_max" :2,
+        "y_max" :3,
 #            "y_tick_frequency":0.1,
         "x_tick_frequency":1,
         "x_axis_width":6,
@@ -16,7 +16,7 @@ class exponen(GraphScene):
         "y_axis_label": "$p(x; \lambda)$",
         "exclude_zero_label" :False,
         "axes_color":BLUE,
-        "graph_origin":LEFT*3 + DOWN,        
+        "graph_origin":LEFT*3 + DOWN*1.2,        
         "x_labeled_nums":[0] 
     }
         self.lamb = 0.5 
@@ -34,6 +34,9 @@ class exponen(GraphScene):
             return self.lamb*np.exp(-self.lamb*x)
         self.graph = self.get_graph(func,x_min=0, x_max = 10, color = ORANGE) 
         la_tracker = ValueTracker(0.5)
+        
+        title1 = Tex("Exponential Distribution").scale(0.7).to_edge(UP).shift(RIGHT*2)
+        self.add(title1)
 
         self.play(ShowCreation(self.graph))
         

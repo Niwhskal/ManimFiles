@@ -24,14 +24,19 @@ class exp(GraphScene):
 
         self.add(self.pdist)
         self.play(Write(dtext))    
-
+        self.wait(1)
         eqn = TexMobject("ML \\ model", color = BLUE).next_to(graph_group, 6*RIGHT)
         rect = SurroundingRectangle(eqn, color = GOLD)
-        self.play(Write(eqn))
-        self.add(rect)
-        etext = TextMobject(r"...and feed it to:").next_to(eqn, TOP).scale(0.6)
+        inp_text = TextMobject(r"i/p").next_to(eqn, LEFT).scale(0.5)
+        out_text = TextMobject(r"o/p").next_to(eqn, RIGHT).scale(0.5)
+        etext = TextMobject(r"...and feed it to your model:").next_to(eqn, TOP).scale(0.4)
+        self.add(inp_text)
+        self.add(out_text)
 
         self.play(Write(etext))
+        self.play(Write(eqn))
+        self.add(rect)
+        self.wait(1)
 
         x_vals = np.random.normal(0.0, 1.0, 5)
         dot ={}
@@ -64,13 +69,13 @@ class exp(GraphScene):
         for k, v in enumerate(x_vals):
             self.play(ShowCreation(dot[k]))
             dottext = TexMobject(str(round(v,2))).next_to(dot[k], 0.2*DOWN).scale(0.5)
-            dotx = TexMobject('x =').next_to(dottext, LEFT).scale(0.5)
+            dotx = TexMobject('x =').next_to(dottext, LEFT).shift(0.2*RIGHT).scale(0.5)
             
             self.add(dottext)
             self.add(dotx)
             
             rn_rate = np.log(2+np.exp(-k))
-            inp_text = TexMobject(str(round(v,2))).next_to(eqn, LEFT).scale(0.5)
+            inp_text = TexMobject(str(round(v,2))).next_to(inp_text, DOWN).scale(0.5)
             self.play(ShowCreation(inp_text, run_time = rn_rate))
             self.wait(0.5)
             otext = TexMobject(str(round(v*v,2))).next_to(eqn, RIGHT).scale(0.5)

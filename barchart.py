@@ -18,6 +18,9 @@ class barch(Scene):
 
     def construct(self):
         data = [0.0, 1.0]
+        img = ImageMobject('/home/niwhskal/Downloads/Untitled45.png').scale(0.2).to_corner(DR)
+        self.add(img)
+
         chart = BarChart(values = data, **self.CONFIG).shift(UP).scale(0.6)
         title = TextMobject("Bernoulli Distribution").next_to(chart, UP).scale(0.7)
         self.add(title)

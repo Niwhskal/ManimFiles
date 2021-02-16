@@ -18,9 +18,13 @@ class multinou(Scene):
 
     def construct(self):
         data = [0.25, 0.25, 0.25, 0.25]
+        img = ImageMobject('/home/niwhskal/Downloads/Untitled45.png').scale(0.2).to_corner(DR)
+        self.add(img)
+
         chart = BarChart(values = data, **self.CONFIG).scale(0.6)
         title = TextMobject("Multinoulli Distribution").next_to(chart, UP).scale(0.7)
         self.add(title)
+        
         
         phi_tracker_1 = ValueTracker(0)
         phi_tracker_2 = ValueTracker(0)
@@ -33,7 +37,9 @@ class multinou(Scene):
 
         self.play(Write(chart))
         self.wait(1)
-        
+        eqn = Tex("$P(BTC) + P(ETH) + P(Doge)+P(RIP) = 1$").to_edge(DOWN, buff = 0.8).scale(0.5)
+        self.play(Write(eqn))
+
         
         chart.add_updater(lambda m: m.become(BarChart([phi_tracker_1.get_value(), phi_tracker_2.get_value(),phi_tracker_3.get_value(),phi_tracker_4.get_value()], **self.CONFIG)).scale(0.6))
 #        chart.change_bar_values([bernoulli(1, phi_tracker.get_value()), bernoulli(0, phi_tracker.get_value())])
